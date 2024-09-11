@@ -19,6 +19,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: rgba(0, 0, 0, 1); /* Fondo oscuro para resaltar las imágenes */
+            z-index: 9999; /* Asegura que el contenedor esté por encima de todo */
         }
 
         .image-container img {
@@ -30,15 +32,43 @@
         .image-container img.active {
             display: block;
         }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2em;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .arrow-left {
+            left: 10px;
+        }
+
+        .arrow-right {
+            right: 10px;
+        }
+        .head{
+            position: fixed;
+            top: 0px;
+            align-self: center;
+        }
     </style>
 </head>
 <body>
     <div class="image-container">
-        <img src="1.png" alt="Imagen 1" class="active">
-        <img src="2.png" alt="Imagen 2">
-        <img src="3.png" alt="Imagen 3">
+        <h2 class="head"> <iframe frameborder="0" scrolling="no" src="https://freesound.org/embed/sound/iframe/746694/simple/small/" width="375" height="30"></iframe></h2>
+        <button class="arrow arrow-left" onclick="showPreviousImage()">&#9664;</button>
+        <img src="https://syngenta.sharepoint.com/sites/desarrollodeproceso/Shared%20Documents/Reportes/1.png" alt="Imagen 1" class="active">
+        <img src="https://syngenta.sharepoint.com/sites/desarrollodeproceso/Shared%20Documents/Reportes/2.png" alt="Imagen 2">
+        <img src="https://syngenta.sharepoint.com/sites/desarrollodeproceso/Shared%20Documents/Reportes/3.png" alt="Imagen 3">
+        <button class="arrow arrow-right" onclick="showNextImage()">&#9654;</button>
+        
     </div>
-
     <script>
         const images = document.querySelectorAll('.image-container img');
         let currentIndex = 0;
@@ -49,7 +79,33 @@
             images[currentIndex].classList.add('active');
         }
 
+        function showPreviousImage() {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            images[currentIndex].classList.add('active');
+        }
+
         setInterval(showNextImage, 120000); // 120,000 milisegundos = 2 minutos
+  
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'F9') {
+                toggleContenedor();
+            }
+        });
+
+        function toggleContenedor() {
+            const contenedor = document.querySelector('.image-container');
+            const boton = document.querySelector('.boton-ocultar');
+
+            if (contenedor.style.display === 'none') {
+                contenedor.style.display = 'flex';
+                boton.textContent = 'Ocultar Página';
+            } else {
+                contenedor.style.display = 'none';
+                boton.textContent = 'Mostrar Página';
+            }
+        }
+    
     </script>
 </body>
 </html>
